@@ -1,7 +1,7 @@
 Python Asynchronous AMQP client library 
 ================================
 
-|Version|1.6.2|
+|Version|0.6.2|
 |---|---|
 |Travis|[![Build Status](https://travis-ci.org/odedlaz/txamqp.svg?branch=master)](https://travis-ci.org/odedlaz/txamqp)|
 |Coverage|[![Coverage Status](https://coveralls.io/repos/github/odedlaz/txamqp/badge.svg)](https://coveralls.io/github/odedlaz/txamqp)|
