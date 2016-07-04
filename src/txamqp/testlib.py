@@ -36,6 +36,11 @@ RABBITMQ = "RABBITMQ"
 OPENAMQ = "OPENAMQ"
 QPID = "QPID"
 
+SPECS = {
+    RABBITMQ: 'standard/amqp0-9.stripped.xml',
+    OPENAMQ: 'standard/amqp0-9.stripped.xml',
+    QPID: 'qpid/amqp.0-8.xml'
+}
 
 class supportedBrokers(object):
 
@@ -72,16 +77,15 @@ class TestBase(unittest.TestCase):
                 "Using default broker rabbitmq. Define TXAMQP_BROKER "
                 "environment variable to customized it.")
             self.broker = RABBITMQ
-        if self.broker == RABBITMQ:
-            self.spec = '../specs/standard/amqp0-9.stripped.xml'
-        elif self.broker == OPENAMQ:
-            self.spec = '../specs/standard/amqp0-9.stripped.xml'
-        elif self.broker == QPID:
-            self.spec = '../specs/qpid/amqp.0-8.xml'
-        else:
+
+        spec_file = SPECS.get(self.broker, None)
+        if not spec_file:
             raise RuntimeError(
                 "Unsupported broker '%s'. Use one of RABBITMQ, OPENAMQ or "
                 "QPID" % self.broker)
+
+        self.spec = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'specs', spec_file))
+
         self.user = USERNAME
         self.password = PASSWORD
         self.vhost = VHOST
