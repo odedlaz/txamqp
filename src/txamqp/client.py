@@ -94,13 +94,17 @@ class TwistedDelegate(Delegate):
     def basic_return_(self, ch, msg):
         self.client.basic_return_queue.put(msg)
 
+    def channel_flow(self, ch, msg):
+        ch.channel_flow_ok(active=msg.active)
+
     def channel_close(self, ch, msg):
         ch.channel_close_ok()
-        ch.close(msg)
+        ch.doClose(msg)
 
     def connection_close(self, ch, msg):
         self.client.close(msg)
 
     def close(self, reason):
         self.client.closed = True
-        self.client.started.fail_if_not_fired(reason)
+        self.client.started.fail_if_not_fired(Closed(reason))
+        self.client.transport.loseConnection()
